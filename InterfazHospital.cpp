@@ -5,10 +5,17 @@ InterfazHospital::InterfazHospital() {
 	hospitalVet = new Hospital();
 }
 
+bool InterfazHospital::continuar() {
+	char opcion;
+	cout << "Desea continuar? s:si | n:no:" << endl;
+	cin >> opcion;
+	return opcion;
+}
+
 void InterfazHospital::MenuPrincipal() {
 	int opcion = 1;
 
-	while (opcion != 0) {
+	while(opcion !=0){
 
 		cout << "----------HOSPITAL VETERINARIO UNIVERSIDAD NACIONAL----------" << endl;
 		cout << endl;
@@ -20,11 +27,11 @@ void InterfazHospital::MenuPrincipal() {
 		cin >> opcion;
 
 		switch (opcion) {
-		case 1:
+		case 1: 
 			system("cls");
 			opcion1();
 			break;
-		case 2:
+		case 2: 
 			system("cls");
 			opcion2();
 			break;
@@ -38,14 +45,14 @@ void InterfazHospital::MenuPrincipal() {
 		}
 
 		system("cls");
-	}
+	} 
 	exit(0);
 	system("cls");
 }
 
 void InterfazHospital::opcion1() {
 	int op1 = 1;
-	while (op1 != 0) {
+	while(op1 !=0){
 		system("CLS");
 		cout << "---------------------------(1) SUBMENU ADMINISTRACION---------------------------" << endl;
 		cout << "(1) Ingresar Especialidades" << endl;
@@ -78,7 +85,7 @@ void InterfazHospital::opcion1() {
 			MenuPrincipal();
 		}break;
 		}
-	}
+	} 
 	exit(0);
 	system("cls");
 }
@@ -102,7 +109,10 @@ void InterfazHospital::ingresarEsp() {
 	}
 	delete doctores;
 
-	cin.get();
+	if (!continuar()) {
+		exit(0);
+	}
+
 }
 
 void InterfazHospital::ingresarDoc() {
@@ -134,6 +144,10 @@ void InterfazHospital::ingresarDoc() {
 	}
 
 	delete agenda;
+
+	if (!continuar()) {
+		exit(0);
+	}
 }
 
 void InterfazHospital::ingresarDueno() {
@@ -160,6 +174,10 @@ void InterfazHospital::ingresarDueno() {
 	}
 
 	delete mascotas;
+
+	if (!continuar()) {
+		exit(0);
+	}
 }
 
 void InterfazHospital::ingresarMascota() {
@@ -191,19 +209,22 @@ void InterfazHospital::ingresarMascota() {
 		cout << "No se ha logrado ingresar la mascota" << endl;
 	}
 
+	if (!continuar()) {
+		exit(0);
+	}
 }
 
 
 void InterfazHospital::opcion2() {
 	int op2 = 1;
-	while (op2 != 0) {
+	while(op2 != 0){
 		system("CLS");
 
 		cout << "----------SUBMENU CONTROL DE CITAS----------" << endl;
 		cout << "(1) Sacar Citas" << endl;
 		cout << "(2) Cancelar Cita" << endl;
 		cout << "(3) Mostrar Calendario de Citas por Doctor" << endl;
-		cout << "(4) Mostrar Citas Por Dueño" << endl;
+		cout << "(4) Mostrar Citas Por DueÃ±o" << endl;
 		cout << "(5) Regresar al Menu Principal" << endl;
 		cout << "Seleccione una opcion: " << endl;
 		cin >> op2;
@@ -219,11 +240,11 @@ void InterfazHospital::opcion2() {
 		}break;
 		case 3: {
 			system("cls");
-			cout << "------------(3) Mostrar Calendario de Citas por Doctor------------" << endl;
+			mostrarCalendarioXDoc();
 		}break;
 		case 4: {
 			system("cls");
-			cout << "------------(4) Mostrar Citas Por Dueño------------" << endl;
+			mostrarCitasXDue();
 		}break;
 		case 5: {
 			system("cls");
@@ -244,6 +265,9 @@ void InterfazHospital::guardarCita(string dia, int hora, Especialidad* especiali
 		cout << "No se logro guardar la cita" << endl;
 		delete nuevaCita;
 	}
+	if (!continuar()) {
+		exit(0);
+	}
 }
 
 void InterfazHospital::sacarCita() {
@@ -261,7 +285,7 @@ void InterfazHospital::sacarCita() {
 	else {
 		cout << "No se encontro ningun dueno con esa identificacion" << endl;
 	}
-
+	
 	cout << endl;
 	cout << "Ingrese el nombre del paciente: " << endl;
 	cin >> nomPaciente;
@@ -301,11 +325,15 @@ void InterfazHospital::sacarCita() {
 		cout << "No se logro encontrar ninguna especialidad o dueno" << endl;
 	}
 
+	if (!continuar()) {
+		exit(0);
+	}
+
 }
 
 void InterfazHospital::cancelarCita() {
 	int idDueno, idDoctor, hora;
-	string nomPaciente, especialidad, diaCita;
+	string nomPaciente, diaCita;
 
 	cout << "------------(2) Cancelar Cita------------" << endl;
 
@@ -315,18 +343,7 @@ void InterfazHospital::cancelarCita() {
 	if (!dueno) {
 		cout << "No se encontro ningun dueno con esa identificacion" << endl;
 	}
-
-	cout << hospitalVet->getEspecialidad()->toStringEspecialidades();
-
-	cout << "Ingrese la especialidad en la cual tiene la cita que desea cancelar: " << endl;
-	cin >> especialidad;
-
-	Especialidad* specialty = hospitalVet->getEspecialidad()->getEspecialidad(especialidad);
-	if (!specialty) {
-		cout << "No se encontro ninguna especialidad" << endl;
-	}
-
-	cout << specialty->getContenedorDoctores()->toStringDocs() << endl;
+	/*cout<<hospitalVet->getEspecialidad()->*/
 	cout << "Ingrese la identificacion del doctor con el cual tiene su cita: " << endl;
 	cin >> idDoctor;
 
@@ -335,7 +352,7 @@ void InterfazHospital::cancelarCita() {
 	cout << "Ingrese el nombre del paciente del cual desea cancelar la cita: ";
 	cin >> nomPaciente;
 
-	cout << "Información de las citas del paciente " << nomPaciente << " :";
+	cout << "InformaciÃ³n de las citas del paciente " << nomPaciente << " :";
 	cout << hospitalVet->getCita()->citasPorMascota(nomPaciente);
 
 	cout << "Ingrese el dia de la cita de la cual desea cancelar:";
@@ -350,20 +367,49 @@ void InterfazHospital::cancelarCita() {
 	else {
 		cout << "No se encontro una cita para cancelar" << endl;
 	}
+
+	if (!continuar()) {
+		exit(0);
+	}
 }
 
+void InterfazHospital::mostrarCalendarioXDoc() {
+	cout << "------------(3) Mostrar Calendario de Citas por Doctor------------" << endl;
 
+	cout << hospitalVet->getEspecialidad()->DoctorXEspecialidad() << endl;
+	int idDoctor;
+	cout << "Ingrese la cedula de el doctor del cual desea ver el calendario: " << endl;
+	cin >> idDoctor;
+	
+	cout << hospitalVet->getCita()->mostrarCalendarioXDoc(idDoctor) << endl;
+
+	if (!continuar()) {
+		exit(0);
+	}
+}
+
+void InterfazHospital::mostrarCitasXDue() {
+	cout << "------------(4) Mostrar Citas Por DueÃ±o------------" << endl;
+	int cedDue;
+	cout << "Ingrese su cedula: " << endl;
+	cin >> cedDue;
+	cout << hospitalVet->getCita()->mostrarCitasXDueno(cedDue) << endl;
+
+	if (!continuar()) {
+		exit(0);
+	}
+}
 
 
 void InterfazHospital::opcion3() {
 	int op3 = 1;
-	while (op3 != 0) {
+	while(op3 != 0) {
 		system("CLS");
 
 		cout << "---------BUSQUEDA Y LISTADOS---------" << endl;
 		cout << "(1) Mostrar Listado de Especialidades" << endl;
 		cout << "(2) Mostrar Listado de Doctores por Especialidad" << endl;
-		cout << "(3) Mostrar Duenño con sus Mascotas" << endl;
+		cout << "(3) Mostrar DuenÃ±o con sus Mascotas" << endl;
 		cout << "(4) Mostrar Pacientes por Doctor" << endl;
 		cout << "(5) Regresar al Menu Principal" << endl;
 		cout << "Seleccione una opcion: " << endl;
@@ -372,19 +418,19 @@ void InterfazHospital::opcion3() {
 		switch (op3) {
 		case 1: {
 			system("cls");
-			cout << "------------(1) Mostrar Listado de Especialidades------------" << endl;
+			mostrarEspecialidades();
 		}break;
 		case 2: {
 			system("cls");
-			cout << "------------(2) Mostrar Listado de Doctores por Especialidad------------" << endl;
+			doctoresXEsp();
 		}break;
 		case 3: {
 			system("cls");
-			cout << "------------(3) Mostrar Duenño con sus Mascotas------------" << endl;
+			mostrarDuenoYMascotas();
 		}break;
 		case 4: {
 			system("cls");
-			cout << "------------(4) Mostrar Pacientes por Doctor------------" << endl;
+			pacientesXDoc();
 		}break;
 		case 5: {
 			system("cls");
@@ -393,6 +439,42 @@ void InterfazHospital::opcion3() {
 			MenuPrincipal();
 		}break;
 		}
+	} 
+}
+
+void InterfazHospital::mostrarEspecialidades() {
+	cout << "------------(1) Mostrar Listado de Especialidades------------" << endl;
+	cout << hospitalVet->getEspecialidad()->toStringEspecialidades() << endl;
+
+	if (!continuar()) {
+		exit(0);
+	}
+}
+void InterfazHospital::doctoresXEsp() {
+	cout << "------------(2) Mostrar Listado de Doctores por Especialidad------------" << endl;
+	cout << hospitalVet->getEspecialidad()->DoctorXEspecialidad() << endl;
+
+	if (!continuar()) {
+		exit(0);
+	}
+}
+void InterfazHospital::mostrarDuenoYMascotas() {
+	cout << "------------(3) Mostrar DueÃ±o con sus Mascotas------------" << endl;
+	cout << hospitalVet->getDueno()->mostrarDuenoConMascota() << endl;
+
+	if (!continuar()) {
+		exit(0);
+	}
+}
+void InterfazHospital::pacientesXDoc() {
+	cout << "------------(4) Mostrar Pacientes por Doctor------------" << endl;
+	int cedDoc;
+	cout << "Ingrese la cedula del doctor del cual desea ver los pacientes:" << endl;
+	cin >> cedDoc;
+	cout << hospitalVet->getCita()->toStringPacientesXDoc(cedDoc) << endl;
+
+	if (!continuar()) {
+		exit(0);
 	}
 }
 
